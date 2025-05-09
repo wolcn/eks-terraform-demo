@@ -13,7 +13,7 @@ This code and documentation is something of a work in progress, so will likely g
 
 ### Provisioning using the Terraform code
 
-Note that this code uses the AWS Region `eu-north-1` - if you want to use another for any reason you'll need to change the value in `main.tf` as well as for example the awscli commands on this page
+Note that this code uses the AWS Region `eu-north-1` so if you want to use another for any reason you'll need to change the value in `main.tf` as well as for example the awscli commands on this page
 
 The Terraform state files are stored locally, which is good enough here
 
