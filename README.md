@@ -42,7 +42,7 @@ kubectl get nodeclaims
 
 The folder [inflate](/inflate) has a simple manifest that can be used to verify that nodes can be provisioned in different node pools
 
-Once done with the environment, clean up with the usual:
+Once done with the environment, clean up with:
 ```
 terraform destroy
 ```
