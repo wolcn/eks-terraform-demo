@@ -5,11 +5,12 @@ A simple Terraform EKS installation using the automode configuration and locally
 This code and documentation is something of a work in progress, so will likely get updated from time to time    
 
 ### Prerequisites for client    
-A Thinkpad with Ubuntu 24.04.2 LTS was the client used for development    
 
   - AWS account with awscli environment configured    
   - Terraform installed and configured    
   - ```kubectl``` installed    
+
+A Thinkpad with Ubuntu 24.04.2 LTS was the client used for development    
 
 ### Provisioning using the Terraform code
 
