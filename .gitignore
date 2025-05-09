@@ -1,4 +1,4 @@
-# .gitignore file taken from one of the official Terraform repos
+# .gitignore file taken from one of the official Terraform repos and slightly modified
 
 # Local .terraform directories
 **/.terraform/*
