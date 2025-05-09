@@ -10,11 +10,11 @@ This code and documentation is something of a work in progress, so will likely g
   - Terraform installed and configured    
   - ```kubectl``` installed    
 
-A Thinkpad with Ubuntu 24.04.2 LTS was the client used for development    
+A Thinkpad with Ubuntu 24.04.2 LTS was used for development    
 
 ### Provisioning using the Terraform code
 
-Note that this code uses the AWS Region `eu-north-1` so if you want to use another for any reason you'll need to change the value in `main.tf` as well as for example the awscli commands on this page
+Note that this code uses the AWS Region `eu-north-1` so if you want to use another for any reason you'll need to change the value in `main.tf` as well as for the awscli command given on this page to update the local `kubeconfig` file
 
 The Terraform state files are stored locally, which is good enough here
 
