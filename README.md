@@ -40,7 +40,7 @@ Because it's an automode cluster, no nodes will be shown until pods have been su
 kubectl get nodeclaims
 ```
 
-The folder [inflate](/inflate) has a simple manifest that can be used to verify that nodes can be provisioned in different node pools
+The folder [inflate](/inflate) has a simple deployment manifest that can be used to verify that nodes can be provisioned in different node pools
 
 Once done with the environment, clean up with:
 ```
