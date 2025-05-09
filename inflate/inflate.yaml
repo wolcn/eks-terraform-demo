@@ -1,0 +1,42 @@
+# Simple manifest that can be used to verify node pools
+# Uses the application pool by default; to use either the core or the gpu pool
+# the appropriate nodeSelector needs to be uncommented
+# Node tolerations have already been configured and are enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inflate
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inflate
+  template:
+    metadata:
+      labels:
+        app: inflate
+    spec:
+      terminationGracePeriodSeconds: 0
+      nodeSelector:
+        eks.amazonaws.com/compute-type: auto # Select nodes provisioned by automode karpenter
+        # karpenter.sh/nodepool: core # Uncomment to select the core pool
+        # karpenter.sh/nodepool: gpu # Uncomment to select the gpu pool
+        karpenter.sh/nodepool: application # Default so no need to set
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      tolerations:
+        - key: "CriticalAddonsOnly" # For core nodes
+          operator: "Exists"
+        - key: "gpu"
+          operator: "Exists" # For GPU nodes
+      containers:
+        - name: inflate
+          image: public.ecr.aws/eks-distro/kubernetes/pause:3.7
+          resources:
+            requests:
+              cpu: 250m
+          securityContext:
+            allowPrivilegeEscalation: false

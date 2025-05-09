@@ -1,0 +1,24 @@
+---
+apiVersion: eks.amazonaws.com/v1
+kind: NodeClass
+metadata:
+  name: gpu-class
+spec:
+  ephemeralStorage:
+    iops: 3000
+    size: 80Gi
+    throughput: 125
+  networkPolicy: DefaultAllow
+  networkPolicyEventLogs: Disabled
+  role: ${role_id}
+  securityGroupSelectorTerms:
+  - id: ${security_group_id}
+  snatPolicy: Random
+  subnetSelectorTerms:
+  - tags:
+      kubernetes.io/role/internal-elb: "1" # The private subnets are tagged with this label in vpc.tf
+  tags:
+    # Custom tags for nodes created using this class go here; this sets the Name tag of the EC2 instance
+    Name: ${cluster_name}/gpu
+    team: the-expendables
+    service: demo-platform

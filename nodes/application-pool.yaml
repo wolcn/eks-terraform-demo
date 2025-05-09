@@ -1,0 +1,42 @@
+# Default node pool for applications
+# Based on the default pool 'general-purpose'
+---
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: application
+spec:
+  disruption:
+    budgets:
+      - nodes: 20%
+        reasons:
+          - "Empty"
+          - "Drifted"
+    consolidateAfter: 10s
+    consolidationPolicy: WhenEmptyOrUnderutilized
+  template:
+    spec:
+      expireAfter: 336h
+      nodeClassRef:
+        group: eks.amazonaws.com
+        kind: NodeClass
+        name: application-class
+      requirements:
+        - key: karpenter.sh/capacity-type
+          operator: In
+            - on-demand
+        - key: eks.amazonaws.com/instance-family
+          operator: In
+          values: ["m7a"]
+        - key: eks.amazonaws.com/instance-cpu
+          operator: In
+          values: ["1", "2"]
+        - key: kubernetes.io/arch
+          operator: In
+          values:
+            - amd64
+        - key: kubernetes.io/os
+          operator: In
+          values:
+            - linux
+      terminationGracePeriod: 24h0m0s
