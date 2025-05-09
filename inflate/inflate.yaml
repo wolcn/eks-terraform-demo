@@ -1,4 +1,3 @@
-# Simple manifest that can be used to verify node pools
 # Uses the application pool by default; to use either the core or the gpu pool
 # the appropriate nodeSelector needs to be uncommented
 # Node tolerations have already been configured and are enabled

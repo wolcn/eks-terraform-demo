@@ -34,6 +34,11 @@ kubectl get nodeclasses
 kubectl get nodepools
 ```
 
+Because it's an automode cluster, no nodes will be shown until pods have been sucessfully deployed. When trouble-shooting failed provisioning, the following command can sometimes provide useful information:
+```
+kubectl get nodeclaims
+```
+
 Once done with the environment, clean up with the usual:
 ```
 terraform destroy
