@@ -27,6 +27,8 @@ spec:
           operator: In
           values:
             - on-demand
+            # - spot
+            # - reserved
         - key: eks.amazonaws.com/instance-category
           operator: In
           values:
