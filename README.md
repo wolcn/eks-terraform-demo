@@ -12,7 +12,7 @@ A Thinkpad with Ubuntu 24.04.2 LTS was used for development
   - Terraform installed and configured
   - ```kubectl``` installed
 
-### Enable EC2 spot instances for AWS account
+### Enable EC2 spot instances
 Required if you want to use EC2 spot instances
 ```
 aws iam create-service-linked-role --aws-service-name spot.amazonaws.com || true
