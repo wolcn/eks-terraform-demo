@@ -8,7 +8,7 @@
 - Useful blog post [Using Amazon EC2 Spot Instances with Karpenter](https://aws.amazon.com/blogs/containers/using-amazon-ec2-spot-instances-with-karpenter/)
 - Instance type is set using the key `karpenter.sh/capacity-type`
   - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
-  - Access to EC2 spot instances needs to be enabled if `spot` instances are included in the node pools; if not enabled nodes may fail to spin up
+  - Access to EC2 spot instances needs to be enabled if `spot` instances are included in the node pools; if not enabled, nodes may fail to spin up
   - Pods running in the core pool are assumed to be important to keep running so these nodes should not be set to `spot`
   - If `reserved` instances that match the requirements are available, these are used in preference to other types.
 
