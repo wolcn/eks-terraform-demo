@@ -15,4 +15,4 @@
   - The GPU node category spins up `g` instances only; there is another GPU instance category `p`, but those things are `.48xlarge` only and likely intended for AI model building only
   - Pods for the GPU nodes need to tolerate a taint with the value `gpu` and use the node selector `karpenter.sh/nodepool: gpu`
 
-- The values for `ephemeralStorage:`` in the node class manifests might be minimum values - nodes failed to provision when these values were reduced (the values were originally taken from the default automode node class)
+- The values for `ephemeralStorage:` in the node class manifests might be minimum values - nodes failed to provision when these values were reduced (the values were originally taken from the default automode node class)
