@@ -164,10 +164,16 @@ resource "aws_eks_access_policy_association" "nodeclass" {
   }
 }
 
-# Now the node class manifest file with the role from above
+# Now the node class manifest files with the role from above
+# The dependency module.eks.cluster_id is supposed to wait until the cluster is available before accessing it
+# Provisioning sometimes works without it so not 100% verified yet
 # The Security Group is the one used by the default node classes with the prefix "eks-cluster-sg-${local.cluster_name}-"
 resource "kubectl_manifest" "nodeclass_core" {
-  depends_on = [aws_iam_role.eks_nodeclass, aws_eks_access_entry.nodeclass, aws_eks_access_policy_association.nodeclass]
+  depends_on = [
+    module.eks.cluster_id,
+    aws_eks_access_entry.nodeclass,
+    aws_eks_access_policy_association.nodeclass
+  ]
   yaml_body = templatefile("./nodes/core-class.tftpl", {
     role_id           = aws_iam_role.eks_nodeclass.id
     cluster_name      = local.cluster_name
@@ -176,7 +182,11 @@ resource "kubectl_manifest" "nodeclass_core" {
 }
 
 resource "kubectl_manifest" "nodeclass_application" {
-  depends_on = [aws_iam_role.eks_nodeclass, aws_eks_access_entry.nodeclass, aws_eks_access_policy_association.nodeclass]
+  depends_on = [
+    module.eks.cluster_id,
+    aws_eks_access_entry.nodeclass,
+    aws_eks_access_policy_association.nodeclass
+  ]
   yaml_body = templatefile("./nodes/application-class.tftpl", {
     role_id           = aws_iam_role.eks_nodeclass.id
     cluster_name      = local.cluster_name
@@ -185,7 +195,11 @@ resource "kubectl_manifest" "nodeclass_application" {
 }
 
 resource "kubectl_manifest" "nodeclass_gpu" {
-  depends_on = [aws_iam_role.eks_nodeclass, aws_eks_access_entry.nodeclass, aws_eks_access_policy_association.nodeclass]
+  depends_on = [
+    module.eks.cluster_id,
+    aws_eks_access_entry.nodeclass,
+    aws_eks_access_policy_association.nodeclass
+  ]
   yaml_body = templatefile("./nodes/gpu-class.tftpl", {
     role_id           = aws_iam_role.eks_nodeclass.id
     cluster_name      = local.cluster_name

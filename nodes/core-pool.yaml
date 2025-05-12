@@ -23,8 +23,8 @@ spec:
           operator: In
           values:
             - on-demand
-            # - spot
-            # - reserved
+            - spot
+            - reserved
         - key: eks.amazonaws.com/instance-family
           operator: In
           values: ["m7a", "m7g"]
