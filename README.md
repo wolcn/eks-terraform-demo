@@ -1,23 +1,23 @@
 ## EKS/Terraform demo
 
-A simple Terraform EKS installation using the automode configuration and locally defined node categories instead of the default ones    
+A simple Terraform EKS installation using the automode configuration and locally defined node categories instead of the default ones
 
-This code and documentation is something of a work in progress, so will likely get updated from time to time    
+This code and documentation is something of a work in progress, so will likely get updated from time to time
 
-A Thinkpad with Ubuntu 24.04.2 LTS was used for development    
+A Thinkpad with Ubuntu 24.04.2 LTS was used for development
 
-### Prerequisites for client    
+### Prerequisites for client
 
-  - AWS account with awscli environment configured    
-  - Terraform installed and configured    
-  - ```kubectl``` installed    
+  - AWS account with awscli environment configured
+  - Terraform installed and configured
+  - ```kubectl``` installed
 
-### Enable EC2 spot instances for AWS client
-Required if you want to use EC2 spot instances    
+### Enable EC2 spot instances for AWS account
+Required if you want to use EC2 spot instances
 ```
 aws iam create-service-linked-role --aws-service-name spot.amazonaws.com || true
 ```
-If the role has already been created, you will see:    
+If the role has already been created, you will see:
 
 `An error occurred (InvalidInput) when calling the CreateServiceLinkedRole operation: Service role name AWSServiceRoleForEC2Spot has been taken in this account, please try a different suffix.`
 
