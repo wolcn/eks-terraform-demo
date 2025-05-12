@@ -6,13 +6,13 @@
 - The `application` pool is x64 only, replaces the `general-purpose` pool and like that pool, functions as the default pool
 - The node selector setting `eks.amazonaws.com/compute-type: auto` is used to ensure that pods are placed on nodes provisioned using the automode functionality; only really relevant in a cluster with where non-automode nodes also exist
 - Useful blog post [Using Amazon EC2 Spot Instances with Karpenter](https://aws.amazon.com/blogs/containers/using-amazon-ec2-spot-instances-with-karpenter/)
-- Instance type is set using the key ```karpenter.sh/capacity-type```
-  - If ```spot``` instances are included in the application pool they will be used when available, otherwise on-demand will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
-  - Pods running in the core pool are assumed to be important to keep running so these nodes should not be set to ```spot```
-  - If ```reserved``` instances that match the requirements are available, these are used in preference to other types.
+- Instance type is set using the key `karpenter.sh/capacity-type`
+  - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
+  - Pods running in the core pool are assumed to be important to keep running so these nodes should not be set to `spot`
+  - If `reserved` instances that match the requirements are available, these are used in preference to other types.
 
 - A new category with support for nodes with GPU added
-  - The GPU node category spins up ```g``` instances only; there is another GPU instance category ```p```, but those things are ```.48xlarge``` only and likely intended for AI model building only
-  - Pods for the GPU nodes need to tolerate a taint with the value ```gpu``` and use the node selector `karpenter.sh/nodepool: gpu`
+  - The GPU node category spins up `g` instances only; there is another GPU instance category `p`, but those things are `.48xlarge` only and likely intended for AI model building only
+  - Pods for the GPU nodes need to tolerate a taint with the value `gpu` and use the node selector `karpenter.sh/nodepool: gpu`
 
-- The values for ```ephemeralStorage:``` in the node class manifests might be minimum values - nodes failed to provision when these values were reduced (the values were originally taken from the default automode node class)
+- The values for `ephemeralStorage:`` in the node class manifests might be minimum values - nodes failed to provision when these values were reduced (the values were originally taken from the default automode node class)
