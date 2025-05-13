@@ -8,6 +8,7 @@
 - The node selector setting `eks.amazonaws.com/compute-type: auto` is used to ensure that pods are placed on nodes provisioned using the automode functionality; only really relevant in a cluster with where non-automode nodes also exist
 - Useful blog post [Using Amazon EC2 Spot Instances with Karpenter](https://aws.amazon.com/blogs/containers/using-amazon-ec2-spot-instances-with-karpenter/)
 - From the Karpenter documentation:    
+    
 *For Spot interruptions, the NodePool will start a new node as soon as it sees the Spot interruption warning. Spot interruptions have a 2 minute notice before Amazon EC2 reclaims the instance. Once Karpenter has received this warning it will begin draining the node while in parallel provisioning a new node. Karpenter’s average node startup time means that, generally, there is sufficient time for the new node to become ready before EC2 initiates termination for the spot instance.*
 - Instance type is set using the key `karpenter.sh/capacity-type`
   - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
