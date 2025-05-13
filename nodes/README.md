@@ -11,7 +11,7 @@
     
   *For Spot interruptions, the NodePool will start a new node as soon as it sees the Spot interruption warning. Spot interruptions have a 2 minute notice before Amazon EC2 reclaims the instance. Once Karpenter has received this warning it will begin draining the node while in parallel provisioning a new node. Karpenter’s average node startup time means that, generally, there is sufficient time for the new node to become ready before EC2 initiates termination for the spot instance.*
 - Instance type is set using the key `karpenter.sh/capacity-type`
-  - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
+  - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are reclaimed and pods are recycled
   - Access to EC2 spot instances needs to be enabled if the `spot` instance category is included in the node pools; if not enabled, a deadlock may occur if the provisioner tries to spin up a spot instance
   - Pods running in the `core` pool are assumed to be important to keep running so these nodes should not be set to `spot`
   - If `reserved` instances that match the requirements are available, these are used in preference to other types
