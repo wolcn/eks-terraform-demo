@@ -1,5 +1,6 @@
 ### Comments on node classes and node pools
 
+- [Karpenter](https://karpenter.sh) is used by automode clusters to manage provisioning of nodes. It runs as an embedded service in automode clusters and is patched/updated automatically. Mostly it is identical to standalone Karpenter, but there are some minor differences between the CRDs so be aware of this if migrating node class and pool manifests from standalone Karpenter to embedded Karpenter 
 - The default node classes and pools have been replaced by custom pools and classes. Initially this was because it is not possible to set custom tags on resources using the default classes, but the default pools also included legacy instance types. With custom pools the instance generations can be managed and legacy types avoided
 - Both classes and pools are based on the defaults, but the old names (`system` and `general-purpose`) have not been reused in order to avoid potential conflicts
 - The `core` pool is the equivalent of the `system` pool and retains the setting that allows use of both x64 and arm64 instances. This pool is intended for shared non-application specific pods and requires both a toleration of the taint `CriticalAddonsOnly` and a node selector setting `karpenter.sh/nodepool: core`
