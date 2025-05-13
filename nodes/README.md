@@ -10,7 +10,7 @@
   - If `spot` instances are included in the application pool they will be used when available, otherwise `on-demand` will be used. This requires that applications are able to deal with interruptions gracefully when spot nodes are recycled and pods are recycled
   - Access to EC2 spot instances needs to be enabled if `spot` instances are included in the node pools; if not enabled, nodes may fail to spin up
   - Pods running in the `core` pool are assumed to be important to keep running so these nodes should not be set to `spot`
-  - If `reserved` instances that match the requirements are available, these are used in preference to other types.
+  - If `reserved` instances that match the requirements are available, these are used in preference to other types
 
 - A new category with support for nodes with GPU added
   - The GPU node category spins up `g` instances only; there is another GPU instance category `p`, but those things are `.48xlarge` only and likely intended for AI model building
