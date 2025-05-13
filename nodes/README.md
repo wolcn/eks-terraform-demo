@@ -13,7 +13,7 @@
   - If `reserved` instances that match the requirements are available, these are used in preference to other types.
 
 - A new category with support for nodes with GPU added
-  - The GPU node category spins up `g` instances only; there is another GPU instance category `p`, but those things are `.48xlarge` only and likely intended for AI model building only
+  - The GPU node category spins up `g` instances only; there is another GPU instance category `p`, but those things are `.48xlarge` only and likely intended for AI model building
   - Pods for the GPU nodes need to tolerate a taint with the value `gpu` and use the node selector `karpenter.sh/nodepool: gpu`
 
 - The values for `ephemeralStorage:` in the node class manifests might be minimum values - nodes failed to provision when these values were reduced (the values were originally taken from the default automode node class)
