@@ -217,6 +217,16 @@ resource "kubectl_manifest" "nodepool_application" {
   yaml_body  = file("./nodes/application-pool.yaml")
 }
 
+resource "kubectl_manifest" "nodepool_application_spot" {
+  depends_on = [kubectl_manifest.nodeclass_application]
+  yaml_body  = file("./nodes/application-pool-spot.yaml")
+}
+
+resource "kubectl_manifest" "nodepool_application_ondemand" {
+  depends_on = [kubectl_manifest.nodeclass_application]
+  yaml_body  = file("./nodes/application-pool-ondemand.yaml")
+}
+
 resource "kubectl_manifest" "nodepool_gpu" {
   depends_on = [kubectl_manifest.nodeclass_gpu]
   yaml_body  = file("./nodes/gpu-pool.yaml")
