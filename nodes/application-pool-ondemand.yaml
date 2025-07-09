@@ -40,13 +40,9 @@ spec:
           operator: Gt
           values:
             - "6"
-        - key: eks.amazonaws.com/instance-size
+        - key: eks.amazonaws.com/instance-cpu
           operator: In
-          values:
-            - large
-            - xlarge
-            - 2xlarge
-            - 4xlarge
+          values: ["1", "2"]
         - key: kubernetes.io/arch
           operator: In
           values:

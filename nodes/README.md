@@ -5,6 +5,7 @@
 - Both classes and pools are based on the defaults, but the old names (`system` and `general-purpose`) have not been reused in order to avoid potential conflicts
 - The `core` pool is the equivalent of the `system` pool and retains the setting that allows use of both x64 and arm64 instances. This pool is intended for shared non-application specific pods and requires both a toleration of the taint `CriticalAddonsOnly` and a node selector setting `karpenter.sh/nodepool: core`
 - The `application` pool is x64 only, replaces the `general-purpose` pool and like that pool, functions as the default pool
+    - The `application` pool has been divided in into the `application-spot` and `application-ondemand`, which are weighted so that spot instances have a higher priority
 - The node selector setting `eks.amazonaws.com/compute-type: auto` is used to ensure that pods are placed on nodes provisioned using the automode functionality; only really relevant in a cluster with where non-automode nodes also exist
 - Useful blog post [Using Amazon EC2 Spot Instances with Karpenter](https://aws.amazon.com/blogs/containers/using-amazon-ec2-spot-instances-with-karpenter/)
 - From the Karpenter documentation:    
