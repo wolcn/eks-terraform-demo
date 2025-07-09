@@ -1,4 +1,8 @@
 resource "kubernetes_namespace" "vpa" {
+  depends_on = [
+    module.eks
+  ]
+
   metadata {
     name = "vpa"
 
