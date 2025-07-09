@@ -12,6 +12,17 @@ resource "kubernetes_namespace" "vpa" {
   }
 }
 
+resource "helm_release" "metrics_server" {
+  depends_on = [
+    module.eks
+  ]
+
+  name       = "metrics-server"
+  namespace  = "kube-system"
+  repository = "https://kubernetes-sigs.github.io/metrics-server/"
+  chart      = "metrics-server"
+}
+
 resource "helm_release" "vpa" {
   depends_on = [
     kubernetes_namespace.vpa
