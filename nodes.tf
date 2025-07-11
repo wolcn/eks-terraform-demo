@@ -212,11 +212,6 @@ resource "kubectl_manifest" "nodepool_core" {
   yaml_body  = file("./nodes/core-pool.yaml")
 }
 
-resource "kubectl_manifest" "nodepool_application" {
-  depends_on = [kubectl_manifest.nodeclass_application]
-  yaml_body  = file("./nodes/application-pool.yaml")
-}
-
 resource "kubectl_manifest" "nodepool_application_spot" {
   depends_on = [kubectl_manifest.nodeclass_application]
   yaml_body  = file("./nodes/application-pool-spot.yaml")
