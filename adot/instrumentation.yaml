@@ -1,10 +1,12 @@
 # Simple yaml first, then a template file
+# This enables auto-instrumentation for Java; also available are nodejs, python and dotnet
+# None of these are used for pods running on the target cluster though so this could be skipped
 ---
 apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation
 metadata:
   name: default-instrumentation
-  namespace: opentelemetry
+  namespace: adot
 spec:
   env:
     - name: OTEL_JAVAAGENT_ENABLED

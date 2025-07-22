@@ -1,10 +1,10 @@
 # Put the adot bits here for now
 
 locals {
-  collector_namespace = "opentelemetry"
-  collector_sa        = "opentelemetry-collector"
-  collector_cr        = "opentelemetry-collector"
-  collector_crb       = "opentelemetry-collector"
+  collector_namespace = "adot"
+  collector_sa        = "adot-collector"
+  collector_cr        = "adot-collector"
+  collector_crb       = "adot-collector"
 }
 
 # The collector role

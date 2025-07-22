@@ -4,7 +4,7 @@ apiVersion: opentelemetry.io/v1beta1
 kind: OpenTelemetryCollector
 metadata:
   name: default
-  namespace: opentelemetry
+  namespace: adot
 spec:
   config:
     exporters:
