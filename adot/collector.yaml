@@ -32,4 +32,4 @@ spec:
             - otlp
   image: public.ecr.aws/aws-observability/aws-otel-collector:latest
   mode: deployment
-  serviceAccount: opentelemetry-collector
+  serviceAccount: adot-collector

@@ -109,7 +109,7 @@ resource "kubernetes_service_account" "collector" {
 }
 
 # Cluster role
-resource "kubernetes_cluster_role" "opentelemetry_collector" {
+resource "kubernetes_cluster_role" "adot_collector" {
   depends_on = [module.eks]
   metadata {
     name = local.collector_cr
@@ -132,8 +132,8 @@ resource "kubernetes_cluster_role" "opentelemetry_collector" {
 }
 
 # Cluster role binding
-resource "kubernetes_cluster_role_binding" "opentelemetry_collector" {
-  depends_on = [kubernetes_cluster_role.opentelemetry_collector, kubernetes_service_account.collector]
+resource "kubernetes_cluster_role_binding" "adot_collector" {
+  depends_on = [kubernetes_cluster_role.adot_collector, kubernetes_service_account.collector]
   metadata {
     name = local.collector_crb
   }
@@ -141,7 +141,7 @@ resource "kubernetes_cluster_role_binding" "opentelemetry_collector" {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
     # name      = local.collector_cr
-    name = kubernetes_cluster_role.opentelemetry_collector.id
+    name = kubernetes_cluster_role.adot_collector.id
   }
   subject {
     kind      = "ServiceAccount"
@@ -152,15 +152,15 @@ resource "kubernetes_cluster_role_binding" "opentelemetry_collector" {
 
 # Open telemetry collector
 
-resource "kubectl_manifest" "opentelemetry_collector" {
-  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.opentelemetry_collector]
+resource "kubectl_manifest" "adot_collector" {
+  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.adot_collector]
   yaml_body  = file("./adot/collector.yaml")
 }
 # Instrumentation
 
 /* Commented out as it is not useful in the target environment
-resource "kubectl_manifest" "opentelemetry_instrumentation" {
-  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.opentelemetry_collector]
+resource "kubectl_manifest" "adot_instrumentation" {
+  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.adot_collector]
   yaml_body  = file("./adot/instrumentation.yaml")
 }
 */
