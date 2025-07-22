@@ -11,8 +11,8 @@ data "aws_availability_zones" "available" {
 locals {
   project_name    = "demo"
   cluster_name    = "demo-cluster"
-  cluster_version = "1.33"
-  aws_region      = "eu-north-1"
+  cluster_version = "1.32"
+  aws_region      = "eu-west-1"
 
   vpc_name = "demo-k8s"
   vpc_cidr = "10.0.0.0/16"

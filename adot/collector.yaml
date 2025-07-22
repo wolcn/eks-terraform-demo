@@ -1,0 +1,35 @@
+# Simple yaml first, then a template file
+---
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: default
+  namespace: opentelemetry
+spec:
+  config:
+    exporters:
+      awsxray:
+        region: eu-west-1
+    extensions:
+      awsproxy:
+        region: eu-west-1
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    service:
+      extensions:
+        - awsproxy
+      pipelines:
+        traces:
+          exporters:
+            - awsxray
+          processors: []
+          receivers:
+            - otlp
+  image: public.ecr.aws/aws-observability/aws-otel-collector:latest
+  mode: deployment
+  serviceAccount: opentelemetry-collector

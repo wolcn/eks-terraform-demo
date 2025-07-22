@@ -1,0 +1,18 @@
+# Simple yaml first, then a template file
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: default-instrumentation
+  namespace: opentelemetry
+spec:
+  env:
+    - name: OTEL_JAVAAGENT_ENABLED
+      value: "true"
+  exporter:
+    endpoint: http://default-collector.opentelemetry.svc:4317
+  propagators:
+    - tracecontext
+    - baggage
+  sampler:
+    type: always_on

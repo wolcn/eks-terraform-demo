@@ -1,11 +1,8 @@
 resource "kubernetes_namespace" "vpa" {
-  depends_on = [
-    module.eks
-  ]
+  depends_on = [module.eks]
 
   metadata {
     name = "vpa"
-
     labels = {
       provisioned_by = "terraform"
     }
@@ -13,9 +10,7 @@ resource "kubernetes_namespace" "vpa" {
 }
 
 resource "helm_release" "metrics_server" {
-  depends_on = [
-    module.eks
-  ]
+  depends_on = [module.eks]
 
   name       = "metrics-server"
   namespace  = "kube-system"
@@ -24,9 +19,7 @@ resource "helm_release" "metrics_server" {
 }
 
 resource "helm_release" "vpa" {
-  depends_on = [
-    kubernetes_namespace.vpa
-  ]
+  depends_on = [kubernetes_namespace.vpa]
 
   name       = "vpa"
   namespace  = kubernetes_namespace.vpa.metadata[0].name
