@@ -158,7 +158,9 @@ resource "kubectl_manifest" "opentelemetry_collector" {
 }
 # Instrumentation
 
+/* Commented out as it is not useful in the target environment
 resource "kubectl_manifest" "opentelemetry_instrumentation" {
   depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.opentelemetry_collector]
   yaml_body  = file("./adot/instrumentation.yaml")
 }
+*/
