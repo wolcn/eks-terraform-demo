@@ -35,33 +35,34 @@ resource "aws_iam_policy" "eks_cni_ipv6_policy" {
 # Automode module with both default pools disabled
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.33"
+  version = "~> 21.0"
 
   depends_on = [module.vpc, aws_iam_policy.eks_cni_ipv6_policy]
 
-  cluster_name                    = local.cluster_name
-  cluster_version                 = local.cluster_version
-  enable_irsa                     = false
-  vpc_id                          = module.vpc.vpc_id
-  subnet_ids                      = module.vpc.private_subnets
-  cluster_ip_family               = "ipv6"
-  create_cni_ipv6_iam_policy      = false # Set to false and create the policy independently
-  cluster_endpoint_public_access  = true  # Not SOC2 compliant but simpler for lab work
-  cluster_endpoint_private_access = true
-  cluster_upgrade_policy = {
+  name                       = local.cluster_name
+  kubernetes_version         = local.cluster_version
+  enable_irsa                = false
+  vpc_id                     = module.vpc.vpc_id
+  subnet_ids                 = module.vpc.private_subnets
+  ip_family                  = "ipv6"
+  create_cni_ipv6_iam_policy = false # Set to false and create the policy independently
+  endpoint_public_access     = true  # Not SOC2 compliant but simpler for lab work
+  endpoint_private_access    = true
+  upgrade_policy = {
     support_type = "STANDARD" # Set upgrade policy to STANDARD; default is EXTENDED
   }
 
   # Dev/lab only; disable in prod
   enable_cluster_creator_admin_permissions = true
 
-  cluster_compute_config = {
-    enabled    = true # Automode
-    node_pools = []   # Explicitly disable default node pools
+  compute_config = {
+    enabled = true # Automode
+    # Built-in nodepools not added unless listed
+    # node_pools = ["system", "general-purpose"]
   }
 
   # Not all plugins are included in auto mode so add here; e.g. we use the pod identity agent
-  cluster_addons = {
+  addons = {
     eks-pod-identity-agent = {
       most_recent = true
     }

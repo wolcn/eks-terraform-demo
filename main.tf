@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {
 locals {
   project_name    = "demo"
   cluster_name    = "demo-cluster"
-  cluster_version = "1.33"
+  cluster_version = "1.33" # Older version needed for running adot
   aws_region      = "eu-north-1"
 
   vpc_name = "demo-k8s"
@@ -28,19 +28,19 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.8"
+      version = "~> 6.26.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.17.0"
+      version = "~> 3.1.1"
     }
     kubectl = {
       source  = "alekc/kubectl"
-      version = "~> 2.0"
+      version = "~> 2.1.3"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.32.0"
+      version = "~> 3.0.1"
     }
   }
 }
@@ -61,10 +61,10 @@ provider "kubectl" {
 }
 
 provider "helm" {
-  kubernetes {
+  kubernetes = {
     host                   = module.eks.cluster_endpoint
     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-    exec {
+    exec = {
       api_version = "client.authentication.k8s.io/v1beta1"
       args        = ["eks", "get-token", "--cluster-name", local.cluster_name]
       command     = "aws"

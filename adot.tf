@@ -38,9 +38,8 @@ resource "aws_iam_role_policy_attachment" "cloud_watch_agent_server_policy" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-
 # Cert manager here
-resource "kubernetes_namespace" "cert_manager" {
+resource "kubernetes_namespace_v1" "cert_manager" {
   depends_on = [module.eks]
 
   metadata {
@@ -52,7 +51,7 @@ resource "kubernetes_namespace" "cert_manager" {
 }
 
 resource "helm_release" "cert-manager" {
-  depends_on      = [kubernetes_namespace.cert_manager]
+  depends_on      = [kubernetes_namespace_v1.cert_manager]
   name            = "cert-manager"
   repository      = "https://charts.jetstack.io"
   chart           = "cert-manager"
@@ -60,19 +59,21 @@ resource "helm_release" "cert-manager" {
   namespace       = "cert-manager"
   cleanup_on_fail = true
 
-  set {
+  set = [{
     name  = "installCRDs"
     value = true
-  }
+  }]
 }
 # Addon here
 
-# Currently not available for EKS Kubernetes v1.33 so have to stay with v1.32
+# Currently not compatible with EKS Kubernetes v1.34 so have to stay with v1.33
+# Use the following command to check compatibility and get version
+#   aws eks describe-addon-versions --addon-name adot
 resource "aws_eks_addon" "addon_adot" {
   depends_on                  = [helm_release.cert-manager, aws_iam_role.adot_collector]
   cluster_name                = local.cluster_name
   addon_name                  = "adot"
-  addon_version               = "v0.117.0-eksbuild.1"
+  addon_version               = "v0.131.0-eksbuild.1"
   configuration_values        = "{\"manager\":{\"resources\":{\"limits\":{\"cpu\":\"200m\"}}}}" # ?
   resolve_conflicts_on_update = "OVERWRITE"
 }
@@ -88,7 +89,7 @@ resource "aws_eks_pod_identity_association" "adot_collector" {
 }
 
 # Namespace
-resource "kubernetes_namespace" "collector" {
+resource "kubernetes_namespace_v1" "collector" {
   depends_on = [module.eks]
 
   metadata {
@@ -100,8 +101,8 @@ resource "kubernetes_namespace" "collector" {
 }
 
 # Service account
-resource "kubernetes_service_account" "collector" {
-  depends_on = [kubernetes_namespace.collector]
+resource "kubernetes_service_account_v1" "collector" {
+  depends_on = [kubernetes_namespace_v1.collector]
   metadata {
     name      = local.collector_sa
     namespace = local.collector_namespace
@@ -109,7 +110,7 @@ resource "kubernetes_service_account" "collector" {
 }
 
 # Cluster role
-resource "kubernetes_cluster_role" "adot_collector" {
+resource "kubernetes_cluster_role_v1" "adot_collector" {
   depends_on = [module.eks]
   metadata {
     name = local.collector_cr
@@ -132,8 +133,8 @@ resource "kubernetes_cluster_role" "adot_collector" {
 }
 
 # Cluster role binding
-resource "kubernetes_cluster_role_binding" "adot_collector" {
-  depends_on = [kubernetes_cluster_role.adot_collector, kubernetes_service_account.collector]
+resource "kubernetes_cluster_role_binding_v1" "adot_collector" {
+  depends_on = [kubernetes_cluster_role_v1.adot_collector, kubernetes_service_account_v1.collector]
   metadata {
     name = local.collector_crb
   }
@@ -141,7 +142,7 @@ resource "kubernetes_cluster_role_binding" "adot_collector" {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
     # name      = local.collector_cr
-    name = kubernetes_cluster_role.adot_collector.id
+    name = kubernetes_cluster_role_v1.adot_collector.id
   }
   subject {
     kind      = "ServiceAccount"
@@ -153,14 +154,14 @@ resource "kubernetes_cluster_role_binding" "adot_collector" {
 # Open telemetry collector
 
 resource "kubectl_manifest" "adot_collector" {
-  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.adot_collector]
+  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding_v1.adot_collector]
   yaml_body  = file("./adot/collector.yaml")
 }
 # Instrumentation
 
 /* Commented out as it is not useful in the target environment
 resource "kubectl_manifest" "adot_instrumentation" {
-  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding.adot_collector]
+  depends_on = [aws_eks_addon.addon_adot, kubernetes_cluster_role_binding_v1.adot_collector]
   yaml_body  = file("./adot/instrumentation.yaml")
 }
 */

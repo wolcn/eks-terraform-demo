@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "vpa" {
+resource "kubernetes_namespace_v1" "vpa" {
   depends_on = [module.eks]
 
   metadata {
@@ -19,10 +19,10 @@ resource "helm_release" "metrics_server" {
 }
 
 resource "helm_release" "vpa" {
-  depends_on = [kubernetes_namespace.vpa]
+  depends_on = [kubernetes_namespace_v1.vpa]
 
   name       = "vpa"
-  namespace  = kubernetes_namespace.vpa.metadata[0].name
+  namespace  = kubernetes_namespace_v1.vpa.metadata[0].name
   chart      = "vpa"
   repository = "https://charts.fairwinds.com/stable"
   version    = "4.7.2"

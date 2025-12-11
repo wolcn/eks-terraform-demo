@@ -35,7 +35,7 @@ terraform apply --auto-approve
 ```
 And when that is done, the local `kubeconfig` file can be updated:
 ```
-aws eks --region eu-west-1 update-kubeconfig --alias demo-cluster --name demo-cluster
+aws eks --region eu-north-1 update-kubeconfig --alias demo-cluster --name demo-cluster
 ```
 
 Check the node classes and pools:
