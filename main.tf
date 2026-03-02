@@ -11,7 +11,7 @@ data "aws_availability_zones" "available" {
 locals {
   project_name    = "demo"
   cluster_name    = "demo-cluster"
-  cluster_version = "1.33" # Older version needed for running adot
+  cluster_version = "1.35" # Older version needed for running adot
   aws_region      = "eu-north-1"
 
   vpc_name = "demo-k8s"
@@ -28,7 +28,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 6.26.0"
+      version = "~> 6.34.0"
     }
     helm = {
       source  = "hashicorp/helm"
